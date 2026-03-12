@@ -429,16 +429,26 @@ window.registrarUsuario=async function(){
 
 // ── CARRITO ────────────────────────────────────────────────────────────────
 function actualizarBadge(){
-  const n=carrito.length;
+  const n=carrito.reduce((s,i)=>s+(i.cantidad||1),0);
   const badge=document.getElementById("cart-badge");
   badge.textContent=n; badge.style.display=n>0?"flex":"none";
 }
 window.agregarAlCarritoDirecto=function(gid){
   const g=grupos[gid]; if(!g) return;
-  if(carrito.find(i=>i.id===gid)){toast("⚠ Ya está en tu carrito");return;}
-  carrito.push({id:gid,product_name:g.product_name,emoji:g.emoji||"📦",image_url:g.image_url||null,price_per_unit:parseFloat(g.price_per_unit)||0,unit:g.unit||"kg",tipo:"individual"});
-  localStorage.setItem("gp_cart",JSON.stringify(carrito)); actualizarBadge();
-  toast("🛒 "+g.product_name+" agregado");
+  const existe=carrito.find(i=>i.id===gid);
+  if(existe){
+    existe.cantidad=(existe.cantidad||1)+1;
+    toast("🛒 "+g.product_name+" · "+existe.cantidad+" "+g.unit);
+  } else {
+    carrito.push({id:gid,product_name:g.product_name,emoji:g.emoji||"📦",image_url:g.image_url||null,price_per_unit:parseFloat(g.price_per_unit)||0,unit:g.unit||"kg",tipo:"individual",cantidad:1});
+    toast("🛒 "+g.product_name+" agregado");
+  }
+  localStorage.setItem("gp_cart",JSON.stringify(carrito)); actualizarBadge(); renderCarrito();
+};
+window.cambiarCantidad=function(gid,delta){
+  const item=carrito.find(i=>i.id===gid); if(!item) return;
+  item.cantidad=Math.max(1,(item.cantidad||1)+delta);
+  localStorage.setItem("gp_cart",JSON.stringify(carrito)); actualizarBadge(); renderCarrito();
 };
 window.quitarDelCarrito=function(gid){
   carrito=carrito.filter(i=>i.id!==gid);
@@ -447,12 +457,19 @@ window.quitarDelCarrito=function(gid){
 function renderCarrito(){
   const el=document.getElementById("carrito-body");
   if(!carrito.length){ el.innerHTML='<div class="empty"><span>🛒</span>Tu carrito está vacío<br><br><button class="btn-confirmar" onclick="goScreen(\'inicio\')" style="max-width:200px;">Ver productos</button></div>'; return; }
-  const total=carrito.reduce((s,i)=>s+parseFloat(i.price_per_unit||0),0);
+  const total=carrito.reduce((s,i)=>s+parseFloat(i.price_per_unit||0)*(i.cantidad||1),0);
   el.innerHTML=`<div style="display:flex;flex-direction:column;gap:10px;">
     <div style="background:#fef9c3;border:1.5px solid #fde68a;border-radius:12px;padding:10px;font-size:12px;color:#854d0e;">💡 Precio normal. Usa <b>"👥 Ver grupos"</b> para 10% OFF.</div>
     ${carrito.map(i=>`<div style="background:#fff;border-radius:12px;padding:10px 12px;box-shadow:0 1px 6px rgba(0,0,0,.06);display:flex;align-items:center;gap:10px;border:1.5px solid var(--bdr);">
       ${i.image_url?`<img src="${i.image_url}" style="width:40px;height:40px;object-fit:cover;border-radius:8px;">`:`<span style="font-size:30px;">${i.emoji}</span>`}
-      <div style="flex:1;"><div style="font-weight:700;font-size:13px;">${i.product_name}</div><div style="font-size:12px;color:var(--g);font-weight:700;">S/${parseFloat(i.price_per_unit||0).toFixed(1)}/${i.unit}</div></div>
+      <div style="flex:1;"><div style="font-weight:700;font-size:13px;">${i.product_name}</div>
+        <div style="font-size:12px;color:var(--g);font-weight:700;">S/${parseFloat(i.price_per_unit||0).toFixed(1)}/${i.unit}</div>
+        <div style="display:flex;align-items:center;gap:8px;margin-top:6px;">
+          <button onclick="cambiarCantidad('${i.id}',-1)" style="width:26px;height:26px;border-radius:50%;border:2px solid var(--gb);background:var(--gl);color:var(--gd);font-size:16px;font-weight:900;cursor:pointer;display:flex;align-items:center;justify-content:center;">−</button>
+          <span style="font-size:14px;font-weight:800;min-width:20px;text-align:center;">${i.cantidad||1}</span>
+          <button onclick="cambiarCantidad('${i.id}',1)" style="width:26px;height:26px;border-radius:50%;border:2px solid var(--gb);background:var(--g);color:#fff;font-size:16px;font-weight:900;cursor:pointer;display:flex;align-items:center;justify-content:center;">+</button>
+          <span style="font-size:11px;color:var(--mut);">${i.unit}</span>
+        </div></div>
       <button onclick="quitarDelCarrito('${i.id}')" style="background:none;border:none;color:#ef4444;font-size:18px;cursor:pointer;">✕</button>
     </div>`).join("")}
     <div style="background:linear-gradient(135deg,#14532d,#166534);border-radius:14px;padding:14px;color:#fff;">
@@ -491,9 +508,9 @@ window.confirmarCarrito=async function(){
   try{
     let shotUrl="";
     if(fileData){ try{ const fd=new FormData(); fd.append("file",fileData); fd.append("upload_preset","grupay_unsigned"); fd.append("folder","grupay/proofs"); const res=await fetch("https://api.cloudinary.com/v1_1/dyi3mbeqo/image/upload",{method:"POST",body:fd}); const j=await res.json(); if(j.secure_url) shotUrl=j.secure_url; }catch(e){} }
-    const total=carrito.reduce((s,i)=>s+parseFloat(i.price_per_unit||0),0);
+    const total=carrito.reduce((s,i)=>s+parseFloat(i.price_per_unit||0)*(i.cantidad||1),0);
     for(const item of carrito){
-      await addDoc(collection(db,"grupay_pedidos"),{nombre,tel,sector,producto_id:item.id,producto_nombre:item.product_name,producto_emoji:item.emoji,precio_normal:item.price_per_unit,precio_final:item.price_per_unit,tipo_compra:"individual",payment_status:"uploaded",payment_screenshot_url:shotUrl,fecha:serverTimestamp()});
+      await addDoc(collection(db,"grupay_pedidos"),{nombre,tel,sector,producto_id:item.id,producto_nombre:item.product_name,producto_emoji:item.emoji,cantidad:item.cantidad||1,precio_normal:item.price_per_unit,precio_final:item.price_per_unit,tipo_compra:"individual",payment_status:"uploaded",payment_screenshot_url:shotUrl,fecha:serverTimestamp()});
       historial.unshift({id:item.id,product_name:item.product_name,emoji:item.emoji,sector,payment_status:"uploaded",tipo_compra:"individual",fecha:new Date().toLocaleDateString("es-PE",{day:"numeric",month:"short"})});
     }
     localStorage.setItem("gp_hist",JSON.stringify(historial));
