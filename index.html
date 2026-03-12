@@ -443,16 +443,25 @@ window.agregarAlCarritoDirecto=function(gid){
     carrito.push({id:gid,product_name:g.product_name,emoji:g.emoji||"📦",image_url:g.image_url||null,price_per_unit:parseFloat(g.price_per_unit)||0,unit:g.unit||"kg",tipo:"individual",cantidad:1});
     toast("🛒 "+g.product_name+" agregado");
   }
-  localStorage.setItem("gp_cart",JSON.stringify(carrito)); actualizarBadge(); renderCarrito();
+  localStorage.setItem("gp_cart",JSON.stringify(carrito));
+  actualizarBadge();
+  renderInicio();
+  renderCarrito();
 };
 window.cambiarCantidad=function(gid,delta){
   const item=carrito.find(i=>i.id===gid); if(!item) return;
   item.cantidad=Math.max(1,(item.cantidad||1)+delta);
-  localStorage.setItem("gp_cart",JSON.stringify(carrito)); actualizarBadge(); renderCarrito();
+  localStorage.setItem("gp_cart",JSON.stringify(carrito));
+  actualizarBadge();
+  renderInicio();
+  renderCarrito();
 };
 window.quitarDelCarrito=function(gid){
   carrito=carrito.filter(i=>i.id!==gid);
-  localStorage.setItem("gp_cart",JSON.stringify(carrito)); actualizarBadge(); renderCarrito();
+  localStorage.setItem("gp_cart",JSON.stringify(carrito));
+  actualizarBadge();
+  renderInicio();
+  renderCarrito();
 };
 function renderCarrito(){
   const el=document.getElementById("carrito-body");
