@@ -369,8 +369,8 @@ footer{background:var(--ink);color:#fff;padding:28px 20px;text-align:center;}
     <input class="form-input" id="c-sector" placeholder="Ej: Huachipa...">
     <div id="resumen-items" style="margin-bottom:12px;"></div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
-      <div style="background:var(--gl);border:1.5px solid var(--gb);border-radius:10px;padding:10px;text-align:center;"><div style="font-size:20px;">💜</div><div style="font-size:11px;font-weight:700;color:var(--gd);">Yape/Plin</div><div style="font-size:10px;color:var(--muted);">948-115-030</div></div>
-      <div style="background:var(--gl);border:1.5px solid var(--gb);border-radius:10px;padding:10px;text-align:center;"><div style="font-size:20px;">🍋</div><div style="font-size:11px;font-weight:700;color:var(--gd);">Lemon</div><div style="font-size:10px;color:var(--muted);">Interbank</div></div>
+      <div style="background:var(--gl);border:1.5px solid var(--gb);border-radius:10px;padding:10px;text-align:center;"><div style="font-size:20px;">💜</div><div style="font-size:11px;font-weight:700;color:var(--gd);">Yape/Plin</div><div style="font-size:10px;color:var(--muted);">908-066-095</div><div style="font-size:9px;color:var(--muted);font-weight:600;">Helga Ceel</div></div>
+      <div style="background:var(--gl);border:1.5px solid var(--gb);border-radius:10px;padding:10px;text-align:center;"><div style="font-size:20px;">🍋</div><div style="font-size:11px;font-weight:700;color:var(--gd);">Lemon Cash</div><div style="font-size:10px;color:var(--muted);">$neopisk</div></div>
     </div>
     <div class="upload-box" onclick="document.getElementById('file-comprobante').click()">
       <div style="font-size:28px;margin-bottom:6px;">📎</div>
@@ -397,8 +397,8 @@ footer{background:var(--ink);color:#fff;padding:28px 20px;text-align:center;}
     <input class="form-input" id="cc-sector" placeholder="Ej: Huachipa...">
     <div id="cc-resumen" style="margin-bottom:12px;"></div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
-      <div style="background:var(--gl);border:1.5px solid var(--gb);border-radius:10px;padding:10px;text-align:center;"><div style="font-size:20px;">💜</div><div style="font-size:11px;font-weight:700;color:var(--gd);">Yape/Plin</div><div style="font-size:10px;color:var(--muted);">948-115-030</div></div>
-      <div style="background:var(--gl);border:1.5px solid var(--gb);border-radius:10px;padding:10px;text-align:center;"><div style="font-size:20px;">🍋</div><div style="font-size:11px;font-weight:700;color:var(--gd);">Lemon</div><div style="font-size:10px;color:var(--muted);">Interbank</div></div>
+      <div style="background:var(--gl);border:1.5px solid var(--gb);border-radius:10px;padding:10px;text-align:center;"><div style="font-size:20px;">💜</div><div style="font-size:11px;font-weight:700;color:var(--gd);">Yape/Plin</div><div style="font-size:10px;color:var(--muted);">908-066-095</div><div style="font-size:9px;color:var(--muted);font-weight:600;">Helga Ceel</div></div>
+      <div style="background:var(--gl);border:1.5px solid var(--gb);border-radius:10px;padding:10px;text-align:center;"><div style="font-size:20px;">🍋</div><div style="font-size:11px;font-weight:700;color:var(--gd);">Lemon Cash</div><div style="font-size:10px;color:var(--muted);">$neopisk</div></div>
     </div>
     <div class="upload-box" onclick="document.getElementById('file-carrito').click()">
       <div style="font-size:24px;margin-bottom:4px;">📎</div>
@@ -570,24 +570,59 @@ window.confirmarCarrito = async function() {
   const sector = document.getElementById('cc-sector').value.trim();
   if (!nombre || !tel || !sector) { toast('⚠ Completa todos los campos'); return; }
   const btn = document.getElementById('btn-confirmar-carrito');
+  const resetBtn = () => { btn.disabled = false; btn.textContent = '✅ Confirmar pedido'; };
   btn.disabled = true; btn.textContent = 'Procesando...';
   try {
+    // Subir foto (opcional - si falla igual continúa)
     let shotUrl = '';
     if (fileCarritoData) {
-      const fd = new FormData(); fd.append('file', fileCarritoData); fd.append('upload_preset', 'grupay_unsigned'); fd.append('folder', 'grupay/proofs');
-      const res = await fetch('https://api.cloudinary.com/v1_1/dyi3mbeqo/image/upload', { method: 'POST', body: fd });
-      const j = await res.json(); if (j.secure_url) shotUrl = j.secure_url;
+      try {
+        const fd = new FormData();
+        fd.append('file', fileCarritoData);
+        fd.append('upload_preset', 'grupay_unsigned');
+        fd.append('folder', 'grupay/proofs');
+        const res = await fetch('https://api.cloudinary.com/v1_1/dyi3mbeqo/image/upload', { method: 'POST', body: fd });
+        const j = await res.json();
+        if (j.secure_url) shotUrl = j.secure_url;
+      } catch(uploadErr) {
+        console.warn('Upload foto falló, continuando sin captura:', uploadErr);
+      }
     }
+    // Guardar pedidos en Firestore
     const total = carrito.reduce((s, i) => s + parseFloat(i.price_per_unit || 0) * (i.cantidad || 1), 0);
     for (const item of carrito) {
-      await addDoc(collection(db, 'grupay_pedidos'), { nombre, tel, sector, producto_id: item.id, producto_nombre: item.product_name, producto_emoji: item.emoji, cantidad: item.cantidad || 1, precio_normal: item.price_per_unit, precio_final: item.price_per_unit, tipo_compra: 'individual', payment_status: 'uploaded', payment_screenshot_url: shotUrl, fecha: serverTimestamp() });
+      await addDoc(collection(db, 'grupay_pedidos'), {
+        nombre, tel, sector,
+        producto_id: item.id,
+        producto_nombre: item.product_name,
+        producto_emoji: item.emoji || '📦',
+        cantidad: item.cantidad || 1,
+        precio_normal: parseFloat(item.price_per_unit) || 0,
+        precio_final: parseFloat(item.price_per_unit) || 0,
+        tipo_compra: 'individual',
+        payment_status: shotUrl ? 'uploaded' : 'pending',
+        payment_screenshot_url: shotUrl,
+        fecha: serverTimestamp()
+      });
     }
-    const lista = carrito.map(i => `${i.emoji} ${i.product_name} x${i.cantidad||1}`).join(', ');
-    window.open(`https://wa.me/51948115030?text=${encodeURIComponent(`🛒 CARRITO GruPay\n👤 ${nombre} (${tel})\n📍 ${sector}\n📦 ${lista}\n💰 S/${total.toFixed(1)}\n📸 ${shotUrl ? '✅' : '⚠ Sin captura'}`)}`, '_blank');
-    carrito = []; guardarCarrito(); actualizarBadge(); renderGrilla(); renderDrawerCarrito();
-    fileCarritoData = null; cerrarModal('modal-carrito-checkout');
-    toast('🎉 ¡Pedido confirmado!');
-  } catch(e) { toast('❌ ' + e.message); btn.disabled = false; btn.textContent = '✅ Confirmar pedido'; }
+    // Abrir WhatsApp
+    const lista = carrito.map(i => `${i.emoji||'📦'} ${i.product_name} x${i.cantidad||1} ${i.unit||'kg'}`).join('\n');
+    const waMsg = `🛒 PEDIDO GruPay\n👤 ${nombre} (${tel})\n📍 ${sector}\n\n${lista}\n\n💰 Total: S/${total.toFixed(1)}\n📸 Captura: ${shotUrl ? '✅ Enviada' : '⚠ Sin captura'}`;
+    window.open(`https://wa.me/51948115030?text=${encodeURIComponent(waMsg)}`, '_blank');
+    // Limpiar
+    carrito = [];
+    guardarCarrito();
+    actualizarBadge();
+    renderGrilla();
+    renderDrawerCarrito();
+    fileCarritoData = null;
+    document.getElementById('modal-carrito-checkout').classList.remove('on');
+    toast('🎉 ¡Pedido confirmado! Karla te escribirá pronto.');
+  } catch(e) {
+    console.error('Error confirmarCarrito:', e);
+    toast('❌ Error: ' + (e.message || 'Intenta de nuevo'));
+    resetBtn();
+  }
 };
 
 // ── CATEGORIAS ─────────────────────────────────────────────────────────────
