@@ -239,7 +239,8 @@ html,body{height:100%;background:var(--bg);color:var(--txt);font-family:'DM Sans
       <div class="form-card">
         <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:900;margin-bottom:10px;">📸 Comprobante de pago</div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
-          <div style="background:var(--gl);border:1.5px solid var(--gb);border-radius:10px;padding:10px;text-align:center;"><div style="font-size:20px;">💜</div><div style="font-size:11px;font-weight:700;color:var(--gd);">Yape/Plin</div><div style="font-size:10px;color:var(--mut);">992-228-824</div><div style="font-size:10px;color:var(--mut);">Ernesto Piskulic</div></div>
+          <!-- ✅ NÚMERO CORREGIDO: 948-115-030 -->
+          <div style="background:var(--gl);border:1.5px solid var(--gb);border-radius:10px;padding:10px;text-align:center;"><div style="font-size:20px;">💜</div><div style="font-size:11px;font-weight:700;color:var(--gd);">Yape/Plin</div><div style="font-size:10px;color:var(--mut);">948-115-030</div><div style="font-size:10px;color:var(--mut);">Ernesto Piskulic</div></div>
           <div style="background:var(--gl);border:1.5px solid var(--gb);border-radius:10px;padding:10px;text-align:center;"><div style="font-size:20px;">🍋</div><div style="font-size:11px;font-weight:700;color:var(--gd);">Lemon Cash</div><div style="font-size:10px;color:var(--mut);">$neopisk</div></div>
         </div>
         <div class="upload-box" onclick="document.getElementById('file-input').click()">
@@ -275,7 +276,8 @@ html,body{height:100%;background:var(--bg);color:var(--txt);font-family:'DM Sans
   <div class="screen" id="screen-contacto">
     <div class="scroll-body">
       <div class="sec-t" style="padding:4px 0 12px;">📞 Soporte</div>
-      <div class="contact-card" onclick="window.open('https://wa.me/51992228824?text=Hola Karla, necesito soporte GruPay','_blank')">
+      <!-- ✅ NÚMERO CORREGIDO: 948-115-030 -->
+      <div class="contact-card" onclick="window.open('https://wa.me/51948115030?text=Hola Karla, necesito soporte GruPay','_blank')">
         <div style="width:46px;height:46px;border-radius:12px;background:linear-gradient(135deg,#14532d,#16a34a);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">🤖</div>
         <div style="flex:1;"><div style="font-weight:700;font-size:14px;">Karla — Asistente GruPay</div><div style="font-size:12px;color:var(--mut);">Ayuda 24/7 · WhatsApp</div></div>
         <div style="color:var(--mut);font-size:18px;">›</div>
@@ -485,7 +487,7 @@ function renderCarrito() {
   let html = '<div style="padding:14px;display:flex;flex-direction:column;gap:10px;">';
 
   html += `<div style="background:#fef9c3;border:1.5px solid #fde68a;border-radius:12px;padding:10px;font-size:12px;color:#854d0e;">
-    💡 Precio normal. Usa <b>"👥 Ver grupos"</b> para 10% OFF en grupo.</div>`;
+    💡 Precio normal. Usa <b>"👥 Ver grupos"</b> en cada producto para 10% OFF en grupo.</div>`;
 
   carrito.forEach(i => {
     const subtotal = (parseFloat(i.price_per_unit || 0) * (i.cantidad || 1)).toFixed(1);
@@ -507,7 +509,7 @@ function renderCarrito() {
     </div>`;
   });
 
-  html += `<div style="background:linear-gradient(135deg,#14532d,#166534);border-radius:14px;padding:14px;color:#fff;">
+  html += `<div style="background:linear-gradient(135deg,#14532d,#166634);border-radius:14px;padding:14px;color:#fff;">
     <div style="display:flex;justify-content:space-between;font-family:'Syne',sans-serif;font-size:18px;font-weight:900;">
       <span>Total</span><span>S/${total.toFixed(1)}</span>
     </div>
@@ -522,10 +524,11 @@ function renderCarrito() {
     <input class="form-input" id="cart-sector" placeholder="Ej: Huachipa...">
   </div>`;
 
+  // ✅ NÚMERO CORREGIDO: 948-115-030
   html += `<div class="form-card">
     <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:900;margin-bottom:8px;">📸 Comprobante (S/${total.toFixed(1)})</div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
-      <div style="background:var(--gl);border:1.5px solid var(--gb);border-radius:10px;padding:8px;text-align:center;"><div style="font-size:18px;">💜</div><div style="font-size:10px;font-weight:700;color:var(--gd);">Yape/Plin</div><div style="font-size:10px;color:var(--mut);">992-228-824</div><div style="font-size:10px;color:var(--mut);">Ernesto Piskulic</div></div>
+      <div style="background:var(--gl);border:1.5px solid var(--gb);border-radius:10px;padding:8px;text-align:center;"><div style="font-size:18px;">💜</div><div style="font-size:10px;font-weight:700;color:var(--gd);">Yape/Plin</div><div style="font-size:10px;color:var(--mut);">948-115-030</div><div style="font-size:10px;color:var(--mut);">Ernesto Piskulic</div></div>
       <div style="background:var(--gl);border:1.5px solid var(--gb);border-radius:10px;padding:8px;text-align:center;"><div style="font-size:18px;">🍋</div><div style="font-size:10px;font-weight:700;color:var(--gd);">Lemon Cash</div><div style="font-size:10px;color:var(--mut);">$neopisk</div></div>
     </div>
     <div class="upload-box" onclick="document.getElementById('cart-file').click()">
@@ -556,7 +559,7 @@ window.previewCartFile = function(input) {
 
 window.confirmarCarrito = async function() {
   const nombre = document.getElementById('cart-nombre').value.trim();
-  const tel = document.getElementById('cart-tel').value.trim();
+  const tel    = document.getElementById('cart-tel').value.trim();
   const sector = document.getElementById('cart-sector').value.trim();
   if (!nombre || !tel || !sector) { toast('⚠ Completa todos los campos'); return; }
   const btn = document.getElementById('btn-cart-confirm');
@@ -574,20 +577,26 @@ window.confirmarCarrito = async function() {
         if (j.secure_url) shotUrl = j.secure_url;
       } catch(e) {}
     }
+
     const total = carrito.reduce((s, i) => s + parseFloat(i.price_per_unit || 0) * (i.cantidad || 1), 0);
+
     for (const item of carrito) {
+      // ✅ CORREGIDO: monto calculado correctamente por ítem
+      const montoItem = (parseFloat(item.price_per_unit || 0) * (item.cantidad || 1));
       await addDoc(collection(db, 'grupay_pedidos'), {
         nombre, tel, sector,
-        producto_id: item.id,
+        producto_id:    item.id,
         producto_nombre: item.product_name,
         producto_emoji: item.emoji,
-        cantidad: item.cantidad || 1,
-        precio_normal: item.price_per_unit,
-        precio_final: item.price_per_unit,
-        tipo_compra: 'individual',
+        cantidad:       item.cantidad || 1,
+        precio_normal:  item.price_per_unit,
+        precio_final:   item.price_per_unit,
+        monto:          parseFloat(montoItem.toFixed(1)),   // ✅ guardado como número
+        tipo_compra:    'individual',
+        carrito:        true,
         payment_status: 'uploaded',
         payment_screenshot_url: shotUrl,
-        fecha: serverTimestamp()
+        fecha:          serverTimestamp()
       });
       historial.unshift({
         id: item.id,
@@ -601,8 +610,11 @@ window.confirmarCarrito = async function() {
       });
     }
     localStorage.setItem('gp_hist', JSON.stringify(historial));
+
     const lista = carrito.map(i => `${i.emoji} ${i.product_name} x${i.cantidad||1}`).join(', ');
-    window.open(`https://wa.me/51992228824?text=${encodeURIComponent(`🛒 CARRITO GruPay\n👤 ${nombre} (${tel})\n📍 ${sector}\n📦 ${lista}\n💰 S/${total.toFixed(1)}\n📸 ${shotUrl ? '✅' : '⚠ Sin captura'}`)}`, '_blank');
+    // ✅ NÚMERO CORREGIDO: 948-115-030
+    window.open(`https://wa.me/51948115030?text=${encodeURIComponent(`🛒 CARRITO GruPay\n👤 ${nombre} (${tel})\n📍 ${sector}\n📦 ${lista}\n💰 S/${total.toFixed(1)}\n📸 ${shotUrl ? '✅' : '⚠ Sin captura'}`)}`, '_blank');
+
     carrito = [];
     guardarCarrito();
     actualizarBadge();
@@ -685,7 +697,7 @@ window.abrirSectores = async function(gid) {
   const pG = tieneDesc ? Math.round(pN * 0.9 * 10) / 10 : pN;
   document.getElementById('sect-title').textContent = productoActual.emoji + ' ' + productoActual.product_name;
   document.getElementById('sect-desc-box').innerHTML = tieneDesc
-    ? `<div style="background:linear-gradient(135deg,#14532d,#166534);border-radius:14px;padding:14px;color:#fff;margin-bottom:4px;">
+    ? `<div style="background:linear-gradient(135deg,#14532d,#166634);border-radius:14px;padding:14px;color:#fff;margin-bottom:4px;">
         <div style="font-size:10px;opacity:.7;margin-bottom:6px;">💰 PRECIO SEGÚN GRUPO</div>
         <div style="display:flex;gap:16px;">
           <div><div style="font-size:10px;opacity:.7;">Individual</div><div style="font-size:18px;font-weight:900;">S/${pN}/${productoActual.unit||'kg'}</div></div>
@@ -779,7 +791,7 @@ window.previewFile = function(input) {
 
 window.confirmarPedido = async function() {
   const nombre = document.getElementById('c-nombre').value.trim();
-  const tel = document.getElementById('c-tel').value.trim();
+  const tel    = document.getElementById('c-tel').value.trim();
   const sector = document.getElementById('c-sector').value.trim();
   if (!nombre || !tel || !sector) { toast('⚠ Completa todos los campos'); return; }
   if (!productoActual) { toast('⚠ Error: no hay producto'); return; }
@@ -798,33 +810,81 @@ window.confirmarPedido = async function() {
         if (j.secure_url) shotUrl = j.secure_url;
       } catch(e) {}
     }
+
     const pN = parseFloat(productoActual.price_per_unit) || 0;
     const tieneDesc = productoActual.has_discount !== false;
     const pG = tieneDesc ? Math.round(pN * 0.9 * 10) / 10 : pN;
     const esInd = modoCompra === 'individual';
+
+    // ✅ CORREGIDO: monto calculado correctamente
+    const monto = parseFloat((esInd ? pN : pG).toFixed(1));
+
     let sectorId = '';
     if (!esInd) {
       const sectRef = collection(db, 'grupay_groups', productoActual.id, 'sectors');
-      const sSnap = await getDocs(sectRef);
+      const sSnap   = await getDocs(sectRef);
       let sDoc = null;
-      sSnap.forEach(d => { if ((d.data().sector_name || '').toLowerCase() === sector.toLowerCase()) sDoc = { id: d.id, ...d.data() }; });
+      sSnap.forEach(d => {
+        if ((d.data().sector_name || '').toLowerCase() === sector.toLowerCase())
+          sDoc = { id: d.id, ...d.data() };
+      });
       if (sDoc) {
         sectorId = sDoc.id;
-        await updateDoc(doc(db, 'grupay_groups', productoActual.id, 'sectors', sDoc.id), { member_count: increment(1), status: (sDoc.member_count || 0) + 1 >= 5 ? 'active' : 'open' });
+        await updateDoc(doc(db, 'grupay_groups', productoActual.id, 'sectors', sDoc.id), {
+          member_count: increment(1),
+          status: (sDoc.member_count || 0) + 1 >= 5 ? 'active' : 'open'
+        });
       } else {
-        const nd = await addDoc(sectRef, { sector_name: sector, member_count: 1, status: 'open', created_at: serverTimestamp(), lider_nombre: nombre, lider_tel: tel });
+        const nd = await addDoc(sectRef, {
+          sector_name: sector, member_count: 1, status: 'open',
+          created_at: serverTimestamp(), lider_nombre: nombre, lider_tel: tel
+        });
         sectorId = nd.id;
       }
-      await addDoc(collection(db, 'grupay_groups', productoActual.id, 'sectors', sectorId, 'members'), { nombre, tel, sector, payment_status: 'uploaded', payment_screenshot_url: shotUrl, joined_at: serverTimestamp() });
+      await addDoc(collection(db, 'grupay_groups', productoActual.id, 'sectors', sectorId, 'members'), {
+        nombre, tel, sector, payment_status: 'uploaded',
+        payment_screenshot_url: shotUrl, joined_at: serverTimestamp()
+      });
     }
-    await addDoc(collection(db, 'grupay_pedidos'), { nombre, tel, sector, producto_id: productoActual.id, producto_nombre: productoActual.product_name, producto_emoji: productoActual.emoji || '📦', precio_normal: pN, precio_final: esInd ? pN : pG, sector_id: sectorId, tipo_compra: esInd ? 'individual' : 'grupal', payment_status: 'uploaded', payment_screenshot_url: shotUrl, fecha: serverTimestamp() });
-    window.open(`https://wa.me/51992228824?text=${encodeURIComponent(`${esInd ? '🛒 INDIVIDUAL' : '👥 GRUPAL'} GruPay\n👤 ${nombre} (${tel})\n📍 ${sector}\n🛍 ${productoActual.emoji} ${productoActual.product_name}\n📸 ${shotUrl ? '✅' : '⚠ Sin captura'}`)}`, '_blank');
-    historial.unshift({ product_name: productoActual.product_name, emoji: productoActual.emoji || '📦', sector, payment_status: 'uploaded', tipo_compra: esInd ? 'individual' : 'grupal', fecha: new Date().toLocaleDateString('es-PE', { day: 'numeric', month: 'short' }) });
+
+    await addDoc(collection(db, 'grupay_pedidos'), {
+      nombre, tel, sector,
+      producto_id:    productoActual.id,
+      producto_nombre: productoActual.product_name,
+      producto_emoji: productoActual.emoji || '📦',
+      precio_normal:  pN,
+      precio_final:   esInd ? pN : pG,
+      monto:          monto,  // ✅ número, no string vacío
+      sector_id:      sectorId,
+      tipo_compra:    esInd ? 'individual' : 'grupal',
+      payment_status: 'uploaded',
+      payment_screenshot_url: shotUrl,
+      fecha:          serverTimestamp()
+    });
+
+    // ✅ NÚMERO CORREGIDO: 948-115-030
+    window.open(`https://wa.me/51948115030?text=${encodeURIComponent(`${esInd ? '🛒 INDIVIDUAL' : '👥 GRUPAL'} GruPay\n👤 ${nombre} (${tel})\n📍 ${sector}\n🛍 ${productoActual.emoji} ${productoActual.product_name}\n💰 S/${monto}\n📸 ${shotUrl ? '✅' : '⚠ Sin captura'}`)}`, '_blank');
+
+    historial.unshift({
+      product_name: productoActual.product_name,
+      emoji: productoActual.emoji || '📦',
+      sector,
+      payment_status: 'uploaded',
+      tipo_compra: esInd ? 'individual' : 'grupal',
+      fecha: new Date().toLocaleDateString('es-PE', { day: 'numeric', month: 'short' })
+    });
     localStorage.setItem('gp_hist', JSON.stringify(historial));
-    fileData = null; btn.disabled = false; btn.textContent = '✅ Confirmar pedido';
+
+    fileData = null;
+    btn.disabled = false;
+    btn.textContent = '✅ Confirmar pedido';
     toast('✅ ¡Pedido registrado!');
     setTimeout(() => goScreen('pedidos'), 1500);
-  } catch(e) { toast('❌ ' + e.message); btn.disabled = false; btn.textContent = '✅ Confirmar pedido'; }
+  } catch(e) {
+    toast('❌ ' + e.message);
+    btn.disabled = false;
+    btn.textContent = '✅ Confirmar pedido';
+  }
 };
 
 // ── AUTH ───────────────────────────────────────────────────────────────────
@@ -851,12 +911,12 @@ window.cerrarSesion = function() {
 };
 
 window.switchTab = function(t) {
-  document.getElementById('panel-login').style.display = t === 'login' ? 'block' : 'none';
+  document.getElementById('panel-login').style.display  = t === 'login' ? 'block' : 'none';
   document.getElementById('panel-registro').style.display = t === 'registro' ? 'block' : 'none';
-  document.getElementById('tab-login').style.background = t === 'login' ? 'var(--gd)' : '#fff';
-  document.getElementById('tab-login').style.color = t === 'login' ? '#fff' : 'var(--mut)';
+  document.getElementById('tab-login').style.background  = t === 'login' ? 'var(--gd)' : '#fff';
+  document.getElementById('tab-login').style.color       = t === 'login' ? '#fff' : 'var(--mut)';
   document.getElementById('tab-registro').style.background = t === 'registro' ? 'var(--gd)' : '#fff';
-  document.getElementById('tab-registro').style.color = t === 'registro' ? '#fff' : 'var(--mut)';
+  document.getElementById('tab-registro').style.color      = t === 'registro' ? '#fff' : 'var(--mut)';
 };
 
 window.verificarUsuario = async function() {
@@ -867,21 +927,29 @@ window.verificarUsuario = async function() {
   btn.disabled = true; btn.textContent = 'Buscando...';
   msg.style.display = 'block'; msg.textContent = '🔍 Verificando...';
   try {
-    const t9 = tel.replace(/\D/g, '').slice(-9);
+    const t9   = tel.replace(/\D/g, '').slice(-9);
     const snap = await getDocs(collection(db, 'grupay_users'));
     let found = null;
     snap.forEach(d => { const td = (d.data().telefono || '').replace(/\D/g, '').slice(-9); if (td === t9) found = { id: d.id, ...d.data() }; });
-    if (found) { localStorage.setItem('gp_user', JSON.stringify(found)); mostrarUsuario(found); toast('✅ Bienvenido ' + found.nombre.split(' ')[0] + '!'); goScreen('inicio'); }
-    else { msg.textContent = '⚠ Número no encontrado'; msg.style.color = 'var(--r)'; btn.disabled = false; btn.textContent = 'Ingresar →'; }
+    if (found) {
+      localStorage.setItem('gp_user', JSON.stringify(found));
+      mostrarUsuario(found);
+      toast('✅ Bienvenido ' + found.nombre.split(' ')[0] + '!');
+      goScreen('inicio');
+    } else {
+      msg.textContent = '⚠ Número no encontrado';
+      msg.style.color = 'var(--r)';
+      btn.disabled = false; btn.textContent = 'Ingresar →';
+    }
   } catch(e) { msg.textContent = '❌ ' + e.message; btn.disabled = false; btn.textContent = 'Ingresar →'; }
 };
 
 window.registrarUsuario = async function() {
   const nombre = document.getElementById('reg-nombre').value.trim();
-  const tel = document.getElementById('reg-tel').value.trim();
-  const dir = document.getElementById('reg-direccion').value.trim();
-  const ref2 = document.getElementById('reg-referencia').value.trim();
-  const hor = document.getElementById('reg-horario').value;
+  const tel    = document.getElementById('reg-tel').value.trim();
+  const dir    = document.getElementById('reg-direccion').value.trim();
+  const ref2   = document.getElementById('reg-referencia').value.trim();
+  const hor    = document.getElementById('reg-horario').value;
   if (!nombre || !tel || tel.length < 9 || !dir) { toast('⚠ Completa todos los campos'); return; }
   const msg = document.getElementById('reg-msg');
   const btn = document.querySelector('#panel-registro .btn-confirmar');
@@ -889,27 +957,38 @@ window.registrarUsuario = async function() {
   msg.style.display = 'block'; msg.textContent = '⏳ Creando cuenta...';
   try {
     const t9 = tel.replace(/\D/g, '').slice(-9);
-    const r = doc(db, 'grupay_users', t9);
+    const r  = doc(db, 'grupay_users', t9);
     const snap = await getDoc(r);
-    if (snap.exists()) { const data = snap.data(); localStorage.setItem('gp_user', JSON.stringify({ id: t9, ...data })); mostrarUsuario({ id: t9, ...data }); toast('✅ Bienvenido ' + data.nombre.split(' ')[0] + '!'); goScreen('inicio'); return; }
+    if (snap.exists()) {
+      const data = snap.data();
+      localStorage.setItem('gp_user', JSON.stringify({ id: t9, ...data }));
+      mostrarUsuario({ id: t9, ...data });
+      toast('✅ Bienvenido ' + data.nombre.split(' ')[0] + '!');
+      goScreen('inicio');
+      return;
+    }
     const u = { nombre, telefono: t9, telefono_completo: '51' + t9, direccion: dir, referencia: ref2, horario: hor, fecha_registro: serverTimestamp(), activo: true };
     await setDoc(r, u);
     localStorage.setItem('gp_user', JSON.stringify({ id: t9, ...u }));
     mostrarUsuario({ id: t9, ...u });
     toast('🎉 Cuenta creada!');
     goScreen('inicio');
-  } catch(e) { msg.textContent = '❌ ' + e.message; msg.style.color = 'var(--r)'; btn.disabled = false; btn.textContent = 'Crear cuenta →'; }
+  } catch(e) {
+    msg.textContent = '❌ ' + e.message;
+    msg.style.color = 'var(--r)';
+    btn.disabled = false; btn.textContent = 'Crear cuenta →';
+  }
 };
 
 // ── HISTORIAL ──────────────────────────────────────────────────────────────
 function renderHist() {
   const el = document.getElementById('hist-body');
   if (!historial.length) { el.innerHTML = '<div class="empty"><span>📭</span>Aún no tienes pedidos</div>'; return; }
-  el.innerHTML = historial.map((h, i) => `<div class="hist-card">
+  el.innerHTML = historial.map((h) => `<div class="hist-card">
     <div style="font-size:30px;">${h.emoji}</div>
     <div style="flex:1;">
       <div style="font-weight:700;font-size:13px;">${h.product_name}</div>
-      <div style="font-size:11px;color:var(--mut);">📍 ${h.sector} · ${h.fecha} · ${h.tipo_compra === 'grupal' ? '👥' : '🛒'}</div>
+      <div style="font-size:11px;color:var(--mut);">📍 ${h.sector} · ${h.fecha} · ${h.tipo_compra === 'grupal' ? '👥 Grupal' : '🛒 Individual'}</div>
     </div>
     <span style="font-size:10px;font-weight:700;padding:3px 8px;border-radius:99px;background:${h.payment_status === 'verified' ? '#dcfce7' : '#fef9c3'};color:${h.payment_status === 'verified' ? '#15803d' : '#854d0e'};">${h.payment_status === 'verified' ? '✅ Verificado' : '⏳ Pendiente'}</span>
   </div>`).join('');
@@ -929,7 +1008,11 @@ function renderPerfil() {
   el.innerHTML = `<div style="display:flex;flex-direction:column;gap:12px;">
     <div style="background:linear-gradient(135deg,#14532d,#166634);border-radius:16px;padding:20px;color:#fff;display:flex;align-items:center;gap:14px;">
       <div style="width:54px;height:54px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:26px;">${u.nombre ? u.nombre[0].toUpperCase() : '👤'}</div>
-      <div><div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:900;">${u.nombre}</div><div style="font-size:12px;opacity:.8;">📱 ${u.telefono_completo || u.telefono || '—'}</div></div>
+      <div>
+        <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:900;">${u.nombre}</div>
+        <div style="font-size:12px;opacity:.8;">📱 ${u.telefono_completo || u.telefono || '—'}</div>
+        ${u.direccion ? `<div style="font-size:11px;opacity:.7;margin-top:2px;">📍 ${u.direccion}</div>` : ''}
+      </div>
     </div>
     <button onclick="cerrarSesion()" style="width:100%;padding:13px;background:#fff;border:2px solid #fecaca;border-radius:12px;color:#dc2626;font-size:14px;font-weight:700;cursor:pointer;">🚪 Cerrar sesión</button>
   </div>`;
