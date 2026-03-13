@@ -239,8 +239,8 @@ html,body{height:100%;background:var(--bg);color:var(--txt);font-family:'DM Sans
       <div class="form-card">
         <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:900;margin-bottom:10px;">📸 Comprobante de pago</div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
-          <div style="background:var(--gl);border:1.5px solid var(--gb);border-radius:10px;padding:10px;text-align:center;"><div style="font-size:20px;">💜</div><div style="font-size:11px;font-weight:700;color:var(--gd);">Yape/Plin</div><div style="font-size:10px;color:var(--mut);">948-115-030</div></div>
-          <div style="background:var(--gl);border:1.5px solid var(--gb);border-radius:10px;padding:10px;text-align:center;"><div style="font-size:20px;">🍋</div><div style="font-size:11px;font-weight:700;color:var(--gd);">Lemon</div><div style="font-size:10px;color:var(--mut);">Interbank</div></div>
+          <div style="background:var(--gl);border:1.5px solid var(--gb);border-radius:10px;padding:10px;text-align:center;"><div style="font-size:20px;">💜</div><div style="font-size:11px;font-weight:700;color:var(--gd);">Yape/Plin</div><div style="font-size:10px;color:var(--mut);">992-228-824</div><div style="font-size:10px;color:var(--mut);">Ernesto Piskulic</div></div>
+          <div style="background:var(--gl);border:1.5px solid var(--gb);border-radius:10px;padding:10px;text-align:center;"><div style="font-size:20px;">🍋</div><div style="font-size:11px;font-weight:700;color:var(--gd);">Lemon Cash</div><div style="font-size:10px;color:var(--mut);">$neopisk</div></div>
         </div>
         <div class="upload-box" onclick="document.getElementById('file-input').click()">
           <div style="font-size:28px;margin-bottom:6px;">📎</div>
@@ -275,7 +275,7 @@ html,body{height:100%;background:var(--bg);color:var(--txt);font-family:'DM Sans
   <div class="screen" id="screen-contacto">
     <div class="scroll-body">
       <div class="sec-t" style="padding:4px 0 12px;">📞 Soporte</div>
-      <div class="contact-card" onclick="window.open('https://wa.me/51948115030?text=Hola Karla, necesito soporte GruPay','_blank')">
+      <div class="contact-card" onclick="window.open('https://wa.me/51992228824?text=Hola Karla, necesito soporte GruPay','_blank')">
         <div style="width:46px;height:46px;border-radius:12px;background:linear-gradient(135deg,#14532d,#16a34a);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">🤖</div>
         <div style="flex:1;"><div style="font-weight:700;font-size:14px;">Karla — Asistente GruPay</div><div style="font-size:12px;color:var(--mut);">Ayuda 24/7 · WhatsApp</div></div>
         <div style="color:var(--mut);font-size:18px;">›</div>
@@ -525,8 +525,8 @@ function renderCarrito() {
   html += `<div class="form-card">
     <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:900;margin-bottom:8px;">📸 Comprobante (S/${total.toFixed(1)})</div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
-      <div style="background:var(--gl);border:1.5px solid var(--gb);border-radius:10px;padding:8px;text-align:center;"><div style="font-size:18px;">💜</div><div style="font-size:10px;font-weight:700;color:var(--gd);">Yape/Plin</div><div style="font-size:10px;color:var(--mut);">948-115-030</div></div>
-      <div style="background:var(--gl);border:1.5px solid var(--gb);border-radius:10px;padding:8px;text-align:center;"><div style="font-size:18px;">🍋</div><div style="font-size:10px;font-weight:700;color:var(--gd);">Lemon</div><div style="font-size:10px;color:var(--mut);">Interbank</div></div>
+      <div style="background:var(--gl);border:1.5px solid var(--gb);border-radius:10px;padding:8px;text-align:center;"><div style="font-size:18px;">💜</div><div style="font-size:10px;font-weight:700;color:var(--gd);">Yape/Plin</div><div style="font-size:10px;color:var(--mut);">992-228-824</div><div style="font-size:10px;color:var(--mut);">Ernesto Piskulic</div></div>
+      <div style="background:var(--gl);border:1.5px solid var(--gb);border-radius:10px;padding:8px;text-align:center;"><div style="font-size:18px;">🍋</div><div style="font-size:10px;font-weight:700;color:var(--gd);">Lemon Cash</div><div style="font-size:10px;color:var(--mut);">$neopisk</div></div>
     </div>
     <div class="upload-box" onclick="document.getElementById('cart-file').click()">
       <div style="font-size:24px;margin-bottom:4px;">📎</div>
@@ -602,7 +602,7 @@ window.confirmarCarrito = async function() {
     }
     localStorage.setItem('gp_hist', JSON.stringify(historial));
     const lista = carrito.map(i => `${i.emoji} ${i.product_name} x${i.cantidad||1}`).join(', ');
-    window.open(`https://wa.me/51948115030?text=${encodeURIComponent(`🛒 CARRITO GruPay\n👤 ${nombre} (${tel})\n📍 ${sector}\n📦 ${lista}\n💰 S/${total.toFixed(1)}\n📸 ${shotUrl ? '✅' : '⚠ Sin captura'}`)}`, '_blank');
+    window.open(`https://wa.me/51992228824?text=${encodeURIComponent(`🛒 CARRITO GruPay\n👤 ${nombre} (${tel})\n📍 ${sector}\n📦 ${lista}\n💰 S/${total.toFixed(1)}\n📸 ${shotUrl ? '✅' : '⚠ Sin captura'}`)}`, '_blank');
     carrito = [];
     guardarCarrito();
     actualizarBadge();
@@ -818,7 +818,7 @@ window.confirmarPedido = async function() {
       await addDoc(collection(db, 'grupay_groups', productoActual.id, 'sectors', sectorId, 'members'), { nombre, tel, sector, payment_status: 'uploaded', payment_screenshot_url: shotUrl, joined_at: serverTimestamp() });
     }
     await addDoc(collection(db, 'grupay_pedidos'), { nombre, tel, sector, producto_id: productoActual.id, producto_nombre: productoActual.product_name, producto_emoji: productoActual.emoji || '📦', precio_normal: pN, precio_final: esInd ? pN : pG, sector_id: sectorId, tipo_compra: esInd ? 'individual' : 'grupal', payment_status: 'uploaded', payment_screenshot_url: shotUrl, fecha: serverTimestamp() });
-    window.open(`https://wa.me/51948115030?text=${encodeURIComponent(`${esInd ? '🛒 INDIVIDUAL' : '👥 GRUPAL'} GruPay\n👤 ${nombre} (${tel})\n📍 ${sector}\n🛍 ${productoActual.emoji} ${productoActual.product_name}\n📸 ${shotUrl ? '✅' : '⚠ Sin captura'}`)}`, '_blank');
+    window.open(`https://wa.me/51992228824?text=${encodeURIComponent(`${esInd ? '🛒 INDIVIDUAL' : '👥 GRUPAL'} GruPay\n👤 ${nombre} (${tel})\n📍 ${sector}\n🛍 ${productoActual.emoji} ${productoActual.product_name}\n📸 ${shotUrl ? '✅' : '⚠ Sin captura'}`)}`, '_blank');
     historial.unshift({ product_name: productoActual.product_name, emoji: productoActual.emoji || '📦', sector, payment_status: 'uploaded', tipo_compra: esInd ? 'individual' : 'grupal', fecha: new Date().toLocaleDateString('es-PE', { day: 'numeric', month: 'short' }) });
     localStorage.setItem('gp_hist', JSON.stringify(historial));
     fileData = null; btn.disabled = false; btn.textContent = '✅ Confirmar pedido';
