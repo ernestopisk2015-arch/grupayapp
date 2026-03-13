@@ -239,8 +239,8 @@ html,body{height:100%;background:var(--bg);color:var(--txt);font-family:'DM Sans
       <div class="form-card">
         <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:900;margin-bottom:10px;">📸 Comprobante de pago</div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
-          <!-- ✅ NÚMERO CORREGIDO: 948-115-030 -->
-          <div style="background:var(--gl);border:1.5px solid var(--gb);border-radius:10px;padding:10px;text-align:center;"><div style="font-size:20px;">💜</div><div style="font-size:11px;font-weight:700;color:var(--gd);">Yape/Plin</div><div style="font-size:10px;color:var(--mut);">948-115-030</div><div style="font-size:10px;color:var(--mut);">Ernesto Piskulic</div></div>
+          <!-- ✅ NÚMERO CORREGIDO: 908-066-095 -->
+          <div style="background:var(--gl);border:1.5px solid var(--gb);border-radius:10px;padding:10px;text-align:center;"><div style="font-size:20px;">💜</div><div style="font-size:11px;font-weight:700;color:var(--gd);">Yape/Plin</div><div style="font-size:10px;color:var(--mut);">908-066-095</div><div style="font-size:10px;color:var(--mut);">Helga Ceel</div></div>
           <div style="background:var(--gl);border:1.5px solid var(--gb);border-radius:10px;padding:10px;text-align:center;"><div style="font-size:20px;">🍋</div><div style="font-size:11px;font-weight:700;color:var(--gd);">Lemon Cash</div><div style="font-size:10px;color:var(--mut);">$neopisk</div></div>
         </div>
         <div class="upload-box" onclick="document.getElementById('file-input').click()">
@@ -276,8 +276,8 @@ html,body{height:100%;background:var(--bg);color:var(--txt);font-family:'DM Sans
   <div class="screen" id="screen-contacto">
     <div class="scroll-body">
       <div class="sec-t" style="padding:4px 0 12px;">📞 Soporte</div>
-      <!-- ✅ NÚMERO CORREGIDO: 948-115-030 -->
-      <div class="contact-card" onclick="window.open('https://wa.me/51948115030?text=Hola Karla, necesito soporte GruPay','_blank')">
+      <!-- ✅ NÚMERO CORREGIDO: 908-066-095 -->
+      <div class="contact-card" onclick="window.open('https://wa.me/51908066095?text=Hola Karla, necesito soporte GruPay','_blank')">
         <div style="width:46px;height:46px;border-radius:12px;background:linear-gradient(135deg,#14532d,#16a34a);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">🤖</div>
         <div style="flex:1;"><div style="font-weight:700;font-size:14px;">Karla — Asistente GruPay</div><div style="font-size:12px;color:var(--mut);">Ayuda 24/7 · WhatsApp</div></div>
         <div style="color:var(--mut);font-size:18px;">›</div>
@@ -524,11 +524,11 @@ function renderCarrito() {
     <input class="form-input" id="cart-sector" placeholder="Ej: Huachipa...">
   </div>`;
 
-  // ✅ NÚMERO CORREGIDO: 948-115-030
+  // ✅ NÚMERO CORREGIDO: 908-066-095
   html += `<div class="form-card">
     <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:900;margin-bottom:8px;">📸 Comprobante (S/${total.toFixed(1)})</div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
-      <div style="background:var(--gl);border:1.5px solid var(--gb);border-radius:10px;padding:8px;text-align:center;"><div style="font-size:18px;">💜</div><div style="font-size:10px;font-weight:700;color:var(--gd);">Yape/Plin</div><div style="font-size:10px;color:var(--mut);">948-115-030</div><div style="font-size:10px;color:var(--mut);">Ernesto Piskulic</div></div>
+      <div style="background:var(--gl);border:1.5px solid var(--gb);border-radius:10px;padding:8px;text-align:center;"><div style="font-size:18px;">💜</div><div style="font-size:10px;font-weight:700;color:var(--gd);">Yape/Plin</div><div style="font-size:10px;color:var(--mut);">908-066-095</div><div style="font-size:10px;color:var(--mut);">Helga Ceel</div></div>
       <div style="background:var(--gl);border:1.5px solid var(--gb);border-radius:10px;padding:8px;text-align:center;"><div style="font-size:18px;">🍋</div><div style="font-size:10px;font-weight:700;color:var(--gd);">Lemon Cash</div><div style="font-size:10px;color:var(--mut);">$neopisk</div></div>
     </div>
     <div class="upload-box" onclick="document.getElementById('cart-file').click()">
@@ -612,8 +612,8 @@ window.confirmarCarrito = async function() {
     localStorage.setItem('gp_hist', JSON.stringify(historial));
 
     const lista = carrito.map(i => `${i.emoji} ${i.product_name} x${i.cantidad||1}`).join(', ');
-    // ✅ NÚMERO CORREGIDO: 948-115-030
-    window.open(`https://wa.me/51948115030?text=${encodeURIComponent(`🛒 CARRITO GruPay\n👤 ${nombre} (${tel})\n📍 ${sector}\n📦 ${lista}\n💰 S/${total.toFixed(1)}\n📸 ${shotUrl ? '✅' : '⚠ Sin captura'}`)}`, '_blank');
+    // ✅ NÚMERO CORREGIDO: 908-066-095
+    window.open(`https://wa.me/51908066095?text=${encodeURIComponent(`🛒 CARRITO GruPay\n👤 ${nombre} (${tel})\n📍 ${sector}\n📦 ${lista}\n💰 S/${total.toFixed(1)}\n📸 ${shotUrl ? '✅' : '⚠ Sin captura'}`)}`, '_blank');
 
     carrito = [];
     guardarCarrito();
@@ -862,8 +862,8 @@ window.confirmarPedido = async function() {
       fecha:          serverTimestamp()
     });
 
-    // ✅ NÚMERO CORREGIDO: 948-115-030
-    window.open(`https://wa.me/51948115030?text=${encodeURIComponent(`${esInd ? '🛒 INDIVIDUAL' : '👥 GRUPAL'} GruPay\n👤 ${nombre} (${tel})\n📍 ${sector}\n🛍 ${productoActual.emoji} ${productoActual.product_name}\n💰 S/${monto}\n📸 ${shotUrl ? '✅' : '⚠ Sin captura'}`)}`, '_blank');
+    // ✅ NÚMERO CORREGIDO: 908-066-095
+    window.open(`https://wa.me/51908066095?text=${encodeURIComponent(`${esInd ? '🛒 INDIVIDUAL' : '👥 GRUPAL'} GruPay\n👤 ${nombre} (${tel})\n📍 ${sector}\n🛍 ${productoActual.emoji} ${productoActual.product_name}\n💰 S/${monto}\n📸 ${shotUrl ? '✅' : '⚠ Sin captura'}`)}`, '_blank');
 
     historial.unshift({
       product_name: productoActual.product_name,
