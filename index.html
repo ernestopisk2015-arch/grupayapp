@@ -575,25 +575,42 @@ window.confirmarCarrito = function() {
 
   const total = carrito.reduce((s, i) => s + parseFloat(i.price_per_unit || 0) * (i.cantidad || 1), 0);
   const lista = carrito.map(i => `• ${i.emoji||'📦'} ${i.product_name} x${i.cantidad||1} ${i.unit||'kg'} = S/${(parseFloat(i.price_per_unit||0)*(i.cantidad||1)).toFixed(1)}`).join('\n');
-  const waMsg = `🛒 PEDIDO GruPay\n👤 ${nombre}\n📞 ${tel}\n📍 ${sector}\n\n${lista}\n\n💰 TOTAL: S/${total.toFixed(1)}\n\n💜 Yapeo a: 908-066-095 (Helga Ceel)\n🍋 Lemon Cash: $neopisk\n\n⚠ Enviaré mi captura de pago aquí.`;
 
-  // Guardar en Firestore en background (sin bloquear)
-  try {
-    for (const item of carrito) {
-      addDoc(collection(db, 'grupay_pedidos'), {
-        nombre, tel, sector,
-        producto_id: item.id,
-        producto_nombre: item.product_name,
-        producto_emoji: item.emoji || '📦',
-        cantidad: item.cantidad || 1,
-        precio_final: parseFloat(item.price_per_unit) || 0,
-        payment_status: 'pending',
-        fecha: serverTimestamp()
-      });
-    }
-  } catch(e) { console.warn('Firestore error (no crítico):', e); }
+  const fotoStatus = fileCarritoData ? '📸 Captura adjunta' : '⚠ Sin captura (envíala por aquí)';
+  const waMsg = `🛒 PEDIDO GruPay\n👤 ${nombre}\n📞 ${tel}\n📍 ${sector}\n\n${lista}\n\n💰 TOTAL: S/${total.toFixed(1)}\n\n💜 Yape: 908-066-095 (Helga Ceel)\n🍋 Lemon Cash: $neopisk\n\n${fotoStatus}`;
 
-  // Limpiar carrito y cerrar modal ANTES de abrir WhatsApp
+  // Guardar en Firestore en background (sin bloquear UI)
+  const itemsSnapshot = [...carrito];
+  const fotoFile = fileCarritoData;
+  (async () => {
+    try {
+      let shotUrl = '';
+      if (fotoFile) {
+        const fd = new FormData();
+        fd.append('file', fotoFile);
+        fd.append('upload_preset', 'grupay_unsigned');
+        fd.append('folder', 'grupay/proofs');
+        const res = await fetch('https://api.cloudinary.com/v1_1/dyi3mbeqo/image/upload', { method:'POST', body:fd });
+        const j = await res.json();
+        if (j.secure_url) shotUrl = j.secure_url;
+      }
+      for (const item of itemsSnapshot) {
+        await addDoc(collection(db, 'grupay_pedidos'), {
+          nombre, tel, sector,
+          producto_id: item.id,
+          producto_nombre: item.product_name,
+          producto_emoji: item.emoji || '📦',
+          cantidad: item.cantidad || 1,
+          precio_final: parseFloat(item.price_per_unit) || 0,
+          payment_status: shotUrl ? 'uploaded' : 'pending',
+          payment_screenshot_url: shotUrl,
+          fecha: serverTimestamp()
+        });
+      }
+    } catch(e) { console.warn('Background save error:', e); }
+  })();
+
+  // Limpiar y cerrar modal inmediatamente
   carrito = [];
   guardarCarrito();
   actualizarBadge();
@@ -601,7 +618,7 @@ window.confirmarCarrito = function() {
   renderDrawerCarrito();
   fileCarritoData = null;
   document.getElementById('modal-carrito-checkout').classList.remove('on');
-  toast('✅ ¡Abriendo WhatsApp con tu pedido!');
+  toast('✅ ¡Abriendo WhatsApp!');
 
   // Abrir WhatsApp
   setTimeout(() => {
