@@ -669,6 +669,15 @@ function mostrarUsuario(u){
   actualizarBadge();
 }
 
+window.limpiarHistorial=function(){
+  if(!confirm('\u00bfLimpiar tu historial local? Solo borra lo que ves en la app, no afecta Firestore.')) return;
+  historial=[];
+  localStorage.removeItem('gp_hist');
+  toast('\u2705 Historial limpiado');
+  renderHist();
+  renderPerfil();
+};
+
 window.cerrarSesion=function(){
   usuarioActual=null; localStorage.removeItem('gp_user');
   document.getElementById('hdr-btns').style.display='flex';
@@ -750,6 +759,7 @@ function renderPerfil(){
       <div style="width:54px;height:54px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:26px;">${u.nombre?u.nombre[0].toUpperCase():'👤'}</div>
       <div><div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:900;">${u.nombre}</div><div style="font-size:12px;opacity:.8;">📱 ${u.telefono_completo||u.telefono||'—'}</div>${u.direccion?`<div style="font-size:11px;opacity:.7;margin-top:2px;">📍 ${u.direccion}</div>`:''}</div>
     </div>
+    <button onclick="limpiarHistorial()" style="width:100%;padding:13px;background:#fff;border:2px solid #fde68a;border-radius:12px;color:#854d0e;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:8px;">🧹 Limpiar historial local</button>
     <button onclick="cerrarSesion()" style="width:100%;padding:13px;background:#fff;border:2px solid #fecaca;border-radius:12px;color:#dc2626;font-size:14px;font-weight:700;cursor:pointer;">🚪 Cerrar sesión</button>
   </div>`;
 }
