@@ -770,7 +770,7 @@ async function renderHist(){
       </div>`;
     }).join('');
   }catch(e){
-    el.innerHTML='<div class="empty"><span>⚠️</span>Error al cargar pedidos</div>';
+    el.innerHTML='<div class="empty"><span>⚠️</span>'+e.message+'</div>';
     console.error('renderHist:',e);
   }
 }
