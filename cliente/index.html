@@ -574,13 +574,32 @@ window.mostrarFormNuevoSector=function(){
   document.getElementById('form-nuevo-sector').innerHTML=`<div class="form-card" style="margin-top:4px;"><div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:900;margin-bottom:10px;">📍 Crear grupo en mi sector</div><label class="form-label">NOMBRE DE TU SECTOR</label><input class="form-input" id="nuevo-sector-input" placeholder="Ej: Huachipa..." style="margin-bottom:10px;"><button class="btn-confirmar" onclick="crearNuevoSector()">Crear grupo →</button></div>`;
 };
 
-window.crearNuevoSector=function(){
+window.crearNuevoSector=async function(){
   const nombre=document.getElementById('nuevo-sector-input').value.trim();
   if(!nombre){toast('⚠ Escribe tu sector');return;}
-  modoCompra='grupal'; // ✅ CORREGIDO: asegurar modo grupal al crear sector
-  document.getElementById('c-sector').value=nombre;
-  if(usuarioActual){document.getElementById('c-nombre').value=usuarioActual.nombre||'';document.getElementById('c-tel').value=usuarioActual.telefono||'';}
-  renderResumen(); goScreen('checkout');
+  if(!productoActual){toast('⚠ Error: selecciona un producto');return;}
+  modoCompra='grupal';
+  const btn=document.querySelector('#form-nuevo-sector .btn-confirmar');
+  if(btn){btn.disabled=true;btn.textContent='Creando grupo...';}
+  try{
+    const sectRef=collection(db,'grupay_groups',productoActual.id,'sectors');
+    const sSnap=await getDocs(sectRef);
+    let yaExiste=null;
+    sSnap.forEach(d=>{if((d.data().sector_name||'').toLowerCase()===nombre.toLowerCase())yaExiste={id:d.id,...d.data()};});
+    if(!yaExiste){
+      await addDoc(sectRef,{sector_name:nombre,member_count:0,status:'open',created_at:serverTimestamp()});
+      toast('✅ Grupo creado: '+nombre);
+    } else {
+      toast('📍 Grupo ya existe, únete');
+    }
+    document.getElementById('c-sector').value=nombre;
+    if(usuarioActual){document.getElementById('c-nombre').value=usuarioActual.nombre||'';document.getElementById('c-tel').value=usuarioActual.telefono||'';}
+    renderResumen();
+    goScreen('checkout');
+  }catch(e){
+    toast('❌ Error: '+e.message);
+    if(btn){btn.disabled=false;btn.textContent='Crear grupo →';}
+  }
 };
 
 function renderResumen(){
