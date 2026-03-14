@@ -739,13 +739,20 @@ async function renderHist(){
   el.innerHTML='<div class="loading"><div class="spinner"></div><span>Cargando pedidos...</span></div>';
   try{
     const tel=usuarioActual.telefono||usuarioActual.id||'';
-    const snap=await getDocs(query(
-      collection(db,'grupay_pedidos'),
-      where('tel','==',tel),
-      orderBy('fecha','desc')
-    ));
+    const telCompleto=usuarioActual.telefono_completo||('51'+tel);
+    // Buscar por tel (9 digitos) y por telefono_completo (con 51)
+    // Sin orderBy para evitar indices compuestos — ordenamos en cliente
+    const [snap1,snap2]=await Promise.all([
+      getDocs(query(collection(db,'grupay_pedidos'),where('tel','==',tel))),
+      getDocs(query(collection(db,'grupay_pedidos'),where('tel','==',telCompleto)))
+    ]);
+    const seen=new Set();
     const pedidos=[];
-    snap.forEach(d=>pedidos.push({_id:d.id,...d.data()}));
+    [...snap1.docs,...snap2.docs].forEach(d=>{
+      if(!seen.has(d.id)){seen.add(d.id);pedidos.push({_id:d.id,...d.data()});}
+    });
+    // Ordenar por fecha descendente en el cliente
+    pedidos.sort((a,b)=>(b.fecha?.seconds||0)-(a.fecha?.seconds||0));
     if(!pedidos.length){
       el.innerHTML='<div class="empty"><span>📭</span>Aún no tienes pedidos</div>';
       return;
