@@ -546,8 +546,28 @@ window.abrirSectores=async function(gid){
   const el=document.getElementById('sectores-list');
   el.innerHTML='<div class="loading"><div class="spinner"></div><span>Buscando grupos...</span></div>';
   try{
-    const snap=await getDocs(collection(db,'grupay_groups',gid,'sectors'));
-    const sects=[]; snap.forEach(d=>sects.push({id:d.id,...d.data()}));
+    // ✅ Buscar sectores en TODOS los productos (global)
+    const todosGrupos=Object.values(grupos);
+    console.log('Total grupos cargados:', todosGrupos.length);
+    if(!todosGrupos.length){
+      el.innerHTML='<div class="empty"><span>📍</span>Sin grupos aún</div>';
+      mostrarFormNuevoSector();
+      return;
+    }
+    const sectoresVistos=new Set();
+    const sects=[];
+    await Promise.all(todosGrupos.map(async g=>{
+      const snap=await getDocs(collection(db,'grupay_groups',g.id,'sectors'));
+      snap.forEach(d=>{
+        const nombre=(d.data().sector_name||d.id).toLowerCase();
+        if(!sectoresVistos.has(nombre)){
+          sectoresVistos.add(nombre);
+          sects.push({id:d.id,...d.data()});
+        }
+      });
+    }));
+    // Ordenar por member_count descendente
+    sects.sort((a,b)=>(b.member_count||0)-(a.member_count||0));
     if(!sects.length){el.innerHTML='<div class="empty"><span>📍</span>Sin grupos aún</div>';setTimeout(()=>mostrarFormNuevoSector(),400);return;}
     el.innerHTML=sects.map(s=>{
       const pct=Math.min((s.member_count||0)/5*100,100);
@@ -559,6 +579,8 @@ window.abrirSectores=async function(gid){
         <div style="font-size:11px;color:var(--g);margin-top:4px;font-weight:700;">Toca para unirte →</div>
       </div>`;
     }).join('');
+    // Siempre mostrar opción de crear nuevo sector
+    mostrarFormNuevoSector();
   }catch(e){el.innerHTML='<div class="empty"><span>⚠️</span>Error cargando</div>';}
 };
 
@@ -595,6 +617,7 @@ window.crearNuevoSector=async function(){
     renderResumen();
     goScreen('checkout');
   }catch(e){
+    alert('ERROR: '+e.message+' codigo:'+e.code);
     toast('❌ Error: '+e.message);
     if(btn){btn.disabled=false;btn.textContent='Crear grupo →';}
   }
