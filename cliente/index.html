@@ -577,6 +577,7 @@ window.mostrarFormNuevoSector=function(){
 window.crearNuevoSector=function(){
   const nombre=document.getElementById('nuevo-sector-input').value.trim();
   if(!nombre){toast('⚠ Escribe tu sector');return;}
+  modoCompra='grupal'; // ✅ CORREGIDO: asegurar modo grupal al crear sector
   document.getElementById('c-sector').value=nombre;
   if(usuarioActual){document.getElementById('c-nombre').value=usuarioActual.nombre||'';document.getElementById('c-tel').value=usuarioActual.telefono||'';}
   renderResumen(); goScreen('checkout');
