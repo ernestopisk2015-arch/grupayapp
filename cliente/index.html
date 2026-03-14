@@ -482,7 +482,6 @@ window.confirmarCarrito=async function(){
     for(const item of carrito){
       const montoItem=parseFloat((parseFloat(item.price_per_unit||0)*(item.cantidad||1)).toFixed(1));
       await addDoc(collection(db,'grupay_pedidos'),{nombre,tel,sector,producto_id:item.id,producto_nombre:item.product_name,producto_emoji:item.emoji,cantidad:item.cantidad||1,precio_normal:item.price_per_unit,precio_final:item.price_per_unit,monto:montoItem,tipo_compra:'individual',carrito:true,payment_status:'uploaded',payment_screenshot_url:shotUrl,fecha:serverTimestamp()});
-      historial.unshift({id:item.id,product_name:item.product_name,emoji:item.emoji,sector,cantidad:item.cantidad||1,payment_status:'uploaded',tipo_compra:'individual',fecha:new Date().toLocaleDateString('es-PE',{day:'numeric',month:'short'})});
     }
     const lista=carrito.map(i=>`${i.emoji} ${i.product_name} x${i.cantidad||1}`).join(', ');
     window.open(`https://wa.me/51908066095?text=${encodeURIComponent(`🛒 CARRITO GruPay\n👤 ${nombre} (${tel})\n📍 ${sector}\n📦 ${lista}\n💰 S/${total.toFixed(1)}\n📸 ${shotUrl?'✅':'⚠ Sin captura'}`)}`, '_blank');
@@ -649,7 +648,6 @@ window.confirmarPedido=async function(){
     }
     await addDoc(collection(db,'grupay_pedidos'),{nombre,tel,sector,producto_id:productoActual.id,producto_nombre:productoActual.product_name,producto_emoji:productoActual.emoji||'📦',precio_normal:pN,precio_final:esInd?pN:pG,monto,sector_id:sectorId,tipo_compra:esInd?'individual':'grupal',payment_status:'uploaded',payment_screenshot_url:shotUrl,fecha:serverTimestamp()});
     window.open(`https://wa.me/51908066095?text=${encodeURIComponent(`${esInd?'🛒 INDIVIDUAL':'👥 GRUPAL'} GruPay\n👤 ${nombre} (${tel})\n📍 ${sector}\n🛍 ${productoActual.emoji} ${productoActual.product_name}\n💰 S/${monto}\n📸 ${shotUrl?'✅':'⚠ Sin captura'}`)}`, '_blank');
-    historial.unshift({product_name:productoActual.product_name,emoji:productoActual.emoji||'📦',sector,payment_status:'uploaded',tipo_compra:esInd?'individual':'grupal',fecha:new Date().toLocaleDateString('es-PE',{day:'numeric',month:'short'})});
     fileData=null; btn.disabled=false; btn.textContent='✅ Confirmar pedido';
     toast('✅ ¡Pedido registrado!');
     setTimeout(()=>goScreen('pedidos'),1500);
