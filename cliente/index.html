@@ -347,7 +347,7 @@ html,body{height:100%;background:var(--bg);color:var(--txt);font-family:'DM Sans
 <script type="module">
 const { initializeApp } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js");
 const { getFirestore, collection, doc, onSnapshot, addDoc, updateDoc,
-        serverTimestamp, increment, getDocs, getDoc, setDoc }
+        serverTimestamp, increment, getDocs, getDoc, setDoc, query, where, orderBy }
   = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
 
 const db = getFirestore(initializeApp({
@@ -369,7 +369,7 @@ const CATS = {
 
 let grupos={}, catActual='todas', productoActual=null, fileData=null, modoCompra='individual', historial=[], usuarioActual=null, carrito=[];
 try { carrito = JSON.parse(localStorage.getItem('gp_cart')||'[]'); } catch(e) { carrito=[]; }
-try { historial = JSON.parse(localStorage.getItem('gp_hist')||'[]'); } catch(e) {}
+// historial se carga desde Firestore, no localStorage
 try { usuarioActual = JSON.parse(localStorage.getItem('gp_user')||'null'); } catch(e) {}
 if (usuarioActual) mostrarUsuario(usuarioActual);
 actualizarBadge();
@@ -484,7 +484,6 @@ window.confirmarCarrito=async function(){
       await addDoc(collection(db,'grupay_pedidos'),{nombre,tel,sector,producto_id:item.id,producto_nombre:item.product_name,producto_emoji:item.emoji,cantidad:item.cantidad||1,precio_normal:item.price_per_unit,precio_final:item.price_per_unit,monto:montoItem,tipo_compra:'individual',carrito:true,payment_status:'uploaded',payment_screenshot_url:shotUrl,fecha:serverTimestamp()});
       historial.unshift({id:item.id,product_name:item.product_name,emoji:item.emoji,sector,cantidad:item.cantidad||1,payment_status:'uploaded',tipo_compra:'individual',fecha:new Date().toLocaleDateString('es-PE',{day:'numeric',month:'short'})});
     }
-    localStorage.setItem('gp_hist',JSON.stringify(historial));
     const lista=carrito.map(i=>`${i.emoji} ${i.product_name} x${i.cantidad||1}`).join(', ');
     window.open(`https://wa.me/51908066095?text=${encodeURIComponent(`🛒 CARRITO GruPay\n👤 ${nombre} (${tel})\n📍 ${sector}\n📦 ${lista}\n💰 S/${total.toFixed(1)}\n📸 ${shotUrl?'✅':'⚠ Sin captura'}`)}`, '_blank');
     carrito=[];guardarCarrito();actualizarBadge();fileData=null;
@@ -651,7 +650,6 @@ window.confirmarPedido=async function(){
     await addDoc(collection(db,'grupay_pedidos'),{nombre,tel,sector,producto_id:productoActual.id,producto_nombre:productoActual.product_name,producto_emoji:productoActual.emoji||'📦',precio_normal:pN,precio_final:esInd?pN:pG,monto,sector_id:sectorId,tipo_compra:esInd?'individual':'grupal',payment_status:'uploaded',payment_screenshot_url:shotUrl,fecha:serverTimestamp()});
     window.open(`https://wa.me/51908066095?text=${encodeURIComponent(`${esInd?'🛒 INDIVIDUAL':'👥 GRUPAL'} GruPay\n👤 ${nombre} (${tel})\n📍 ${sector}\n🛍 ${productoActual.emoji} ${productoActual.product_name}\n💰 S/${monto}\n📸 ${shotUrl?'✅':'⚠ Sin captura'}`)}`, '_blank');
     historial.unshift({product_name:productoActual.product_name,emoji:productoActual.emoji||'📦',sector,payment_status:'uploaded',tipo_compra:esInd?'individual':'grupal',fecha:new Date().toLocaleDateString('es-PE',{day:'numeric',month:'short'})});
-    localStorage.setItem('gp_hist',JSON.stringify(historial));
     fileData=null; btn.disabled=false; btn.textContent='✅ Confirmar pedido';
     toast('✅ ¡Pedido registrado!');
     setTimeout(()=>goScreen('pedidos'),1500);
@@ -670,12 +668,9 @@ function mostrarUsuario(u){
 }
 
 window.limpiarHistorial=function(){
-  if(!confirm('\u00bfLimpiar tu historial local? Solo borra lo que ves en la app, no afecta Firestore.')) return;
-  historial=[];
   localStorage.removeItem('gp_hist');
-  toast('\u2705 Historial limpiado');
+  toast('✅ Caché limpiado');
   renderHist();
-  renderPerfil();
 };
 
 window.cerrarSesion=function(){
@@ -737,14 +732,49 @@ window.registrarUsuario=async function(){
   }catch(e){msg.textContent='❌ '+e.message;msg.style.color='var(--r)';btn.disabled=false;btn.textContent='Crear cuenta →';}
 };
 
-function renderHist(){
+async function renderHist(){
   const el=document.getElementById('hist-body');
-  if(!historial.length){el.innerHTML='<div class="empty"><span>📭</span>Aún no tienes pedidos</div>';return;}
-  el.innerHTML=historial.map(h=>`<div class="hist-card">
-    <div style="font-size:30px;">${h.emoji}</div>
-    <div style="flex:1;"><div style="font-weight:700;font-size:13px;">${h.product_name}</div><div style="font-size:11px;color:var(--mut);">📍 ${h.sector} · ${h.fecha} · ${h.tipo_compra==='grupal'?'👥 Grupal':'🛒 Individual'}</div></div>
-    <span style="font-size:10px;font-weight:700;padding:3px 8px;border-radius:99px;background:${h.payment_status==='verified'?'#dcfce7':'#fef9c3'};color:${h.payment_status==='verified'?'#15803d':'#854d0e'};">${h.payment_status==='verified'?'✅ Verificado':'⏳ Pendiente'}</span>
-  </div>`).join('');
+  if(!usuarioActual){
+    el.innerHTML='<div class="empty"><span>📭</span>Inicia sesión para ver tus pedidos</div>';
+    return;
+  }
+  el.innerHTML='<div class="loading"><div class="spinner"></div><span>Cargando pedidos...</span></div>';
+  try{
+    const tel=usuarioActual.telefono||usuarioActual.id||'';
+    const snap=await getDocs(query(
+      collection(db,'grupay_pedidos'),
+      where('tel','==',tel),
+      orderBy('fecha','desc')
+    ));
+    const pedidos=[];
+    snap.forEach(d=>pedidos.push({_id:d.id,...d.data()}));
+    if(!pedidos.length){
+      el.innerHTML='<div class="empty"><span>📭</span>Aún no tienes pedidos</div>';
+      return;
+    }
+    el.innerHTML=pedidos.map(h=>{
+      const fecha=h.fecha?.toDate?.()? h.fecha.toDate().toLocaleDateString('es-PE',{day:'numeric',month:'short'}): h.fecha||'';
+      const emoji=h.producto_emoji||'📦';
+      const nombre=h.producto_nombre||'';
+      const sector=h.sector||'';
+      const tipo=h.tipo_compra==='grupal'?'👥 Grupal':'🛒 Individual';
+      const status=h.payment_status||'pending';
+      return `<div class="hist-card">
+        <div style="font-size:30px;">${emoji}</div>
+        <div style="flex:1;">
+          <div style="font-weight:700;font-size:13px;">${nombre}</div>
+          <div style="font-size:11px;color:var(--mut);">📍 ${sector} · ${fecha} · ${tipo}</div>
+        </div>
+        <span style="font-size:10px;font-weight:700;padding:3px 8px;border-radius:99px;
+          background:${status==='verified'?'#dcfce7':'#fef9c3'};
+          color:${status==='verified'?'#15803d':'#854d0e'};
+        ">${status==='verified'?'✅ Verificado':'⏳ Pendiente'}</span>
+      </div>`;
+    }).join('');
+  }catch(e){
+    el.innerHTML='<div class="empty"><span>⚠️</span>Error al cargar pedidos</div>';
+    console.error('renderHist:',e);
+  }
 }
 
 function renderPerfil(){
